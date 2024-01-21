@@ -20,24 +20,36 @@ function generateTambolaTicket() {
   const rows = 3;
   const columns = 9;
 
-  // Initialize an empty ticket
   for (let i = 0; i < rows; i++) {
     const row = [];
     for (let j = 0; j < columns; j++) {
-      row.push(0); // Use 0 for empty spaces
+      row.push(0); 
     }
     ticket.push(row);
-  };
+  }
 
-  // Generate unique random numbers for each column
-  for (let j = 0; j < columns; j++) {
-    const columnNumbers = generateUniqueNumbers(1 + j * 10, 9 + j * 10, rows);
-    for (let i = 0; i < rows; i++) {
-      ticket[i][j] = columnNumbers[i];
+  for (let i = 0; i < rows; i++) {
+    const rowNumbers = generateUniqueNumbersGreaterThanZero(1, 90, 5);
+
+    for (let j = 0; j < Math.min(columns, rowNumbers.length); j++) {
+      ticket[i][j] = rowNumbers[j];
     }
-  };
+  }
 
   return ticket;
+};
+
+function generateUniqueNumbersGreaterThanZero(min, max, count) {
+  const uniqueNumbers = new Set();
+
+  while (uniqueNumbers.size < count) {
+    const randomNumber = Math.floor(Math.random() * (max - min + 1)) + min;
+    if (randomNumber > 0) {
+      uniqueNumbers.add(randomNumber);
+    }
+  }
+
+  return Array.from(uniqueNumbers);
 };
 
 function generateUniqueNumbers(min, max, count) {
@@ -49,8 +61,8 @@ function generateUniqueNumbers(min, max, count) {
   }
 
   return Array.from(uniqueNumbers);
-};
 
+};
 
 exports.create = async (req, res) => {
   try {
@@ -88,10 +100,9 @@ exports.get = async (req, res) => {
       page_number = Number(page_number) || 0;
       let result = [];
       const { rows, count } = await Tickets.findAndCountAll({ offset: page_number * page_size, limit: page_size });
-      let data = rows || [];
-      let obj = {}
-      for (i = 0; i < data?.length; i++) {
-        const { id, ticket } = data[i];
+      for (i = 0; i < rows?.length; i++) {
+        let obj = {}
+        const { id, ticket } = rows[i]?.dataValues;
         obj[id] = ticket;
         result?.push(obj);
       }
