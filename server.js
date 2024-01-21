@@ -34,7 +34,7 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to tambola application." });
 });
 
-app.use('/v1', require("./app/routes/ticket.routes"));
+app.use('/api/tickets', require("./app/routes/ticket.routes"));
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
