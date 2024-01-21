@@ -1,4 +1,4 @@
-We will build Rest Apis that can create, retrieve, update, delete and find Tutorials by title.
+We will build Rest Apis that can create and retrieve tambola tickets.
 
 The following table shows overview of the Rest APIs that will be exported:
 
@@ -10,4 +10,10 @@ npm install
 ### Run
 ```
 node server.js
+
+### Note
+
+Please update your credentials in app/config/db.config.js
+
+
 ```
